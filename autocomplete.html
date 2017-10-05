@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+<title>autocomplete</title>
+
+<style>
+.combobox [role=listbox].hidden {display: none};
+[role=listbox] {list-style-type: none;}
+[role=listbox] > [aria-selected='true']::before {content: ">>";}
+
+[role=listbox] > [tabindex='0'] {border: 1px dotted;}
+[role=listbox] > [tabindex=0]::before {content: "[";}
+[role=listbox] > [tabindex=0]::after {content: "]";}
+</style>
+
+<script src="autocomplete.class.js"></script>
+<script src="combobox.class.js"></script>
+
+</head>
+<body>
+<h1>Test</h1>
+<div class="autocomplete" id="myAutocomplete">
+<div class="combobox multiselect" id="myCombobox">
+<label>choose:
+<input type="text" role="combobox" aria-expanded="false" >
+</label>
+
+<ul role="listbox"></ul>
+</div><!-- .combobox -->
+
+<div class="message" aria-live="polite">
+</div>
+</div><!-- .autocomplete -->
+
+<script>
+let autocomplete = new AutocompleteBehavior (document.querySelector ("#myAutocomplete"),
+["chocolate", "vanilla", "strawberry", "coconut"]);
+
+autocomplete.autocomplete.addEventListener ("value", () => autocomplete.message (`You chose ${autocomplete.valueOf()}.`));
+</script>
+
+</body>
+</html>
