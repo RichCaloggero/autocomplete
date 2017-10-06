@@ -2,7 +2,7 @@
 
 ## Demo
 
-[demo] (https://RichCaloggero.github.io/autocomplete/autocomplete.html)
+[demo](https://RichCaloggero.github.io/autocomplete/autocomplete.html)
 
 
 I wrote this because I've found very few, if any, accessible autocomplete widgets in the wild, especially ones which support multiselect.
