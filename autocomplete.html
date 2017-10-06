@@ -22,8 +22,13 @@
 </head>
 <body>
 <h1>Test</h1>
+
+<p><label>Multiselect
+<input type="checkbox" id="multiselect">
+</label></p>
+
 <div class="autocomplete" id="myAutocomplete">
-<div class="combobox multiselect" id="myCombobox">
+<div class="combobox" id="myCombobox">
 <label>choose:
 <input type="text">
 </label>
@@ -36,10 +41,24 @@
 </div><!-- .autocomplete -->
 
 <script>
-let autocomplete = new AutocompleteBehavior (document.querySelector ("#myAutocomplete"),
-["chocolate", "vanilla", "strawberry", "coconut"]);
+let multiselect = document.querySelector ("#multiselect");
+let autocomplete = setupAutocomplete ();
 
-autocomplete.autocomplete.addEventListener ("value", () => autocomplete.message (`You chose ${autocomplete.valueOf()}.`));
+autocomplete.container.addEventListener ("value", () => autocomplete.message (`You chose ${autocomplete.valueOf()}.`));
+multiselect.addEventListener ("click", e => {
+if (e.target.checked) {
+autocomplete.combobox.container.classList.add("multiselect");
+} else {
+autocomplete.combobox.container.classList.remove("multiselect");
+} // if
+//autocomplete = setupAutocomplete ();
+}); // handler
+
+
+function setupAutocomplete () {
+return new AutocompleteBehavior (document.querySelector ("#myAutocomplete"),
+["chocolate", "vanilla", "strawberry", "coconut"]);
+} // setupAutocomplete
 </script>
 
 </body>

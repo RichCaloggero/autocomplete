@@ -1,8 +1,8 @@
 class AutocompleteBehavior {
 constructor (element, items) {
-this.autocomplete = element;
-this.combobox = new ComboboxBehavior (element.querySelector(".combobox"));
-if (element.classList.contains("multiselect")) this.combobox.classList.add("multiselect");
+this.container = element;
+this.combobox = new ComboboxBehavior (this.container.querySelector(".combobox"));
+if (element.classList.contains("multiselect")) this.combobox.container.classList.add("multiselect");
 this.items = [];
 this.addItems (items);
 
@@ -36,7 +36,7 @@ return this.combobox.valueOf ();
 } // this.valueOf
 
 message (text) {
-let message = this.autocomplete.querySelector (".message");
+let message = this.container.querySelector (".message");
 message.innerHTML = text;
 } // this.message
 

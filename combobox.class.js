@@ -1,21 +1,25 @@
 class ComboboxBehavior {
 constructor (element) {
-this.combobox = element;
-this.listbox = this.combobox.querySelector (".suggestions");
-this.input = this.combobox.querySelector ("input");
+this.combobox = this.container = element;
+this.listbox = this.container.querySelector (".suggestions");
+this.input = this.container.querySelector ("input");
 
-this.active_id = this.combobox.id + "-activedescendant";
-this.listbox.id = this.combobox.id + "-this.listbox";
+this.active_id = this.container.id + "-activedescendant";
+this.listbox.id = this.container.id + "-suggestions";
 this.listbox.style.listStyle = "none";
-
-this.input.addEventListener ("keydown", e => this.navigateInput(e));
 this.input.setAttribute ("role", "combobox");
 this.input.setAttribute ("aria-expanded", "false");
-
-this.listbox.addEventListener ("keydown", e => this.navigateList(e));
 this.listbox.setAttribute ("role", "listbox");
-
 this.close ();
+this.clear ();
+
+this.input.addEventListener ("keydown", e => this.navigateInput(e));
+this.listbox.addEventListener ("keydown", e => this.navigateList(e));
+this.listbox.addEventListener ("focusin", e => {
+if (this.focusedItem()) this.focusedItem().classList.remove("focused");
+e.target.classList.add("focused");
+if (! this.isMultiselect()) this.selectItem (e.target);
+}); // listbox.focusIn
 } // constructor
 
 /// methods
@@ -23,26 +27,17 @@ this.close ();
 navigateInput (e) {
 switch (e.key) {
 case "ArrowUp":
-if (this.isMultiselect()) {
+this.open ();
 this.focusLastItem ();
-} else {
-this.selectItem (this.focusLastItem());
-} // if
-break;
+return false;
 
 case "ArrowDown":
-if (this.isMultiselect()) {
+this.open ();
 this.focusFirstItem ();
-} else {
-this.selectItem (this.focusFirstItem());
-} // if
-break;
+return false;
 
 default: return true;
 } // switch
-
-this.open ();
-return false;
 } // this.navigateInput
 
 navigateList (e) {
@@ -63,19 +58,11 @@ if (this.isMultiselect()) this.selectItem (this.focusedItem(), "toggle");
 return false;
 
 case "ArrowUp":
-if (this.isMultiselect()) {
 this.focusItem (this.previous());
-} else {
-this.selectItem (this.focusItem (this.previous()));
-} // if
 return false;
 
 case "ArrowDown":
-if (this.isMultiselect()) {
 this.focusItem (this.next());
-} else {
-this.selectItem (this.focusItem (this.next()));
-} // if
 return false;
 
 default:  return true;
@@ -87,7 +74,6 @@ this.listbox.classList.remove("hidden");
 this.input.setAttribute ("aria-controls", this.listbox.id);
 this.input.setAttribute ("aria-expanded", "true");
 //this.input.setAttribute ("aria-activedescendant", active_id);
-this.listbox.querySelector ("[aria-selected]").focus ();
 } // this.open
 
 close () {
@@ -105,8 +91,10 @@ item.textContent = text;
 item.setAttribute ("role", "option");
 item.setAttribute ("aria-selected", "false");
 
-if (this.listbox.children.length > 0) item.setAttribute ("tabindex", "-1");
-else item.setAttribute ("tabindex", "0");
+//if (this.listbox.children.length > 0) 
+item.setAttribute ("tabindex", "-1");
+//else item.setAttribute ("tabindex", "0");
+
 this.listbox.appendChild (item);
 } // if
 } // this.addItem
@@ -145,18 +133,17 @@ return item || null;
 } // this.selectItem
 
 focusedItem () {
-return this.listbox.querySelector ("[tabindex='0']");
+return this.listbox.querySelector (".focused");
 } // this.focusedItem 
 
 focusItem (item) {
 if (item) {
-if (this.focusedItem()) this.focusedItem().setAttribute ("tabindex", "-1");
-item.setAttribute ("tabindex", "0");
 item.focus ();
 } // if
 
 return item || null;
 } // this.focusItem
+
 
 unselectAll () {
 this.selectedItems().forEach (e => e.setAttribute ("aria-selected", "false"));
@@ -177,11 +164,19 @@ item => item.getAttribute ("value") || item.textContent
 } // this.valueOf
 
 clear () {
-this.listbox.innerHTML = "";
+if (this.listbox.children.length > 0) {
+Array.from(this.listbox.children).forEach (e => this.listbox.removeChild(e));
+
+/*let element = this.listbox.cloneNode (false);
+let parent = this.listbox.parentElement;
+parent.removeChild (this.listbox);
+this.listbox = parent.appendChild (element);
+*/
+} // if
 } // this.clear
 
 isMultiselect () {
-return this.combobox.classList.contains ("multiselect");
+return this.container.classList.contains ("multiselect");
 } // this.isMultiselect
 
 toggleItem (item) {
@@ -192,7 +187,7 @@ this.selectItem (item, "toggle");
 
 trigger (type, component) {
 let e = new CustomEvent(type, {bubbles: true});
-if (! component) component = this.combobox;
+if (! component) component = this.container;
 component.dispatchEvent (e);
 } // this.trigger
 
