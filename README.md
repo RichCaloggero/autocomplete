@@ -1,5 +1,10 @@
 # Accessible Autocomplete ( typeahead ) widget
 
+## Demo
+
+[demo] (https://RichCaloggero.github.io/autocomplete/autocomplete.html)
+
+
 I wrote this because I've found very few, if any, accessible autocomplete widgets in the wild, especially ones which support multiselect.
 
 This is written in 100% native javascript (no frameworks or external libraries required).
