@@ -1,15 +1,19 @@
 class ComboboxBehavior {
 constructor (element) {
 this.combobox = element;
-this.listbox = this.combobox.querySelector (".combobox [role=listbox]");
-this.input = this.combobox.querySelector (".combobox input");
+this.listbox = this.combobox.querySelector (".suggestions");
+this.input = this.combobox.querySelector ("input");
 
 this.active_id = this.combobox.id + "-activedescendant";
 this.listbox.id = this.combobox.id + "-this.listbox";
 this.listbox.style.listStyle = "none";
 
 this.input.addEventListener ("keydown", e => this.navigateInput(e));
+this.input.setAttribute ("role", "combobox");
+this.input.setAttribute ("aria-expanded", "false");
+
 this.listbox.addEventListener ("keydown", e => this.navigateList(e));
+this.listbox.setAttribute ("role", "listbox");
 
 this.close ();
 } // constructor
