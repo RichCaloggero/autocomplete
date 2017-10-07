@@ -10,10 +10,7 @@
 .combobox [role=listbox].hidden {display: none};
 [role=listbox] {list-style-type: none;}
 [role=listbox] > [aria-selected='true']::before {content: ">>";}
-
-[role=listbox] > [tabindex='0'] {border: 1px dotted;}
-[role=listbox] > [tabindex=0]::before {content: "[";}
-[role=listbox] > [tabindex=0]::after {content: "]";}
+[role=listbox] > .focused {border: 1px dotted;}
 </style>
 
 <script src="autocomplete.class.js"></script>
