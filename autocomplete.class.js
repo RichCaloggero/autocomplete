@@ -12,8 +12,8 @@ let matches = this.filter (e.target.value, "pre");
 if (matches.length) {
 this.combobox.clear ();
 matches.forEach (item => this.combobox.addItem(item));
-this.message (`${matches.length} matches`);
 } // if
+this.message (`${matches.length} matches`);
 });
 } // constructor
 
@@ -36,8 +36,7 @@ return this.combobox.valueOf ();
 } // this.valueOf
 
 message (text) {
-let message = this.container.querySelector (".message");
-message.innerHTML = text;
+this.container.querySelector (".message").innerHTML = text;
 } // this.message
 
 } // class AutocompleteBehavior

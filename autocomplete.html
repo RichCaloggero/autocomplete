@@ -11,6 +11,13 @@
 [role=listbox] {list-style-type: none;}
 [role=listbox] > [aria-selected='true']::before {content: ">>";}
 [role=listbox] > :focus {border: 1px dotted;}
+
+.off-screen {
+position: absolute;
+left: -99999px; top: -99999px;
+width: 1px; height:; 1px;
+overflow: hidden;
+}
 </style>
 
 <script src="autocomplete.class.js"></script>
@@ -21,7 +28,9 @@
 <h1>Test</h1>
 
 <p><label>Multiselect
-<input type="checkbox" id="multiselect">
+<br><input type="checkbox" id="multiselect">
+</label><label>Show screen reader messages
+<br><input type="checkbox" id="showMessages">
 </label></p>
 
 <div class="autocomplete" id="myAutocomplete">
@@ -33,15 +42,21 @@
 <ul class="suggestions"></ul>
 </div><!-- .combobox -->
 
-<div class="message" aria-live="polite">
+<div class="message off-screen" aria-live="polite">
 </div>
 </div><!-- .autocomplete -->
 
+<div id="message" class="message" aria-live="polite">
+</div>
+
 <script>
+let message = document.querySelector ("#message");
 let multiselect = document.querySelector ("#multiselect");
+let showMessages = document.querySelector ("#showMessages");
 let autocomplete = setupAutocomplete ();
 
-autocomplete.container.addEventListener ("done", () => autocomplete.message (`You chose ${autocomplete.valueOf()}.`));
+autocomplete.container.addEventListener ("done", () => message.innerHTML = `You chose ${autocomplete.valueOf()}.`);
+
 multiselect.addEventListener ("click", e => {
 if (e.target.checked) {
 autocomplete.combobox.container.classList.add("multiselect");
@@ -50,6 +65,14 @@ autocomplete.combobox.container.classList.remove("multiselect");
 } // if
 }); // handler
 
+showMessages.addEventListener ("click", e => {
+let message = document.querySelector(".autocomplete .message"); // screen reader message container
+if (e.target.checked) {
+message.classList.remove("off-screen");
+} else {
+message.classList.add("off-screen");
+} // if
+}); // handler
 
 function setupAutocomplete () {
 return new AutocompleteBehavior (document.querySelector ("#myAutocomplete"),

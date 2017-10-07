@@ -16,7 +16,7 @@ this.clear ();
 this.input.addEventListener ("keydown", e => this.navigateInput(e));
 this.listbox.addEventListener ("keydown", e => this.navigateList(e));
 this.listbox.addEventListener ("focusin", e => {
-if (this.focusedItem()) this.focusedItem().setAttribute("tabindex", "-1");
+Array.from(this.listbox.children).forEach (e => e.setAttribute("tabindex", "-1"));
 e.target.setAttribute("tabindex", "0");
 if (! this.isMultiselect()) this.selectItem (e.target);
 }); // listbox.focusIn
@@ -73,6 +73,7 @@ open () {
 this.listbox.classList.remove("hidden");
 this.input.setAttribute ("aria-controls", this.listbox.id);
 this.input.setAttribute ("aria-expanded", "true");
+this.input.setAttribute ("tabindex", "-1");
 //this.input.setAttribute ("aria-activedescendant", active_id);
 } // this.open
 
@@ -80,6 +81,7 @@ close () {
 this.listbox.classList.add("hidden");
 this.input.removeAttribute ("aria-controls");
 this.input.setAttribute ("aria-expanded", "false");
+this.input.removeAttribute ("tabindex");
 //this.input.removeAttribute ("aria-activedescendant");
 this.input.focus ();
 } // this.close
