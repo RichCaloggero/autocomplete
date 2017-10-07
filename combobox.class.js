@@ -16,8 +16,8 @@ this.clear ();
 this.input.addEventListener ("keydown", e => this.navigateInput(e));
 this.listbox.addEventListener ("keydown", e => this.navigateList(e));
 this.listbox.addEventListener ("focusin", e => {
-if (this.focusedItem()) this.focusedItem().classList.remove("focused");
-e.target.classList.add("focused");
+if (this.focusedItem()) this.focusedItem().setAttribute("tabindex", "-1");
+e.target.setAttribute("tabindex", "0");
 if (! this.isMultiselect()) this.selectItem (e.target);
 }); // listbox.focusIn
 } // constructor
@@ -117,23 +117,30 @@ return Array.from(this.listbox.querySelectorAll ("[aria-selected='true']"));
 
 selectItem (item, toggle) {
 if (item) {
-if (toggle) {
+if (toggle && this.isMultiselect()) {
 item.setAttribute ("aria-selected",
 item.getAttribute ("aria-selected") === "true"? "false" : "true"
 ); // setAttribute
+triggerEvent ();
 } else {
 this.unselectAll ();
 item.setAttribute ("aria-selected", "true");
+triggerEvent ();
 } // if
-
-this.trigger ("select", item);
 } // if
 
 return item || null;
+
+
+function triggerEvent () {
+if (item.getAttribute("aria-selected") === "true") this.trigger ("selected", item);
+else this.trigger ("unselected", item);
+} // triggerEvent
 } // this.selectItem
 
 focusedItem () {
-return this.listbox.querySelector (".focused");
+//return this.listbox.querySelector ("[tabindex='0']");
+return this.listbox.querySelector (":focus");
 } // this.focusedItem 
 
 focusItem (item) {

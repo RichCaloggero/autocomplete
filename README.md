@@ -47,5 +47,3 @@ These classes add behavior to existing markup.  The markup you must include has 
 
 Include the scripts as shown in the demo and style as appropriate.
 
-
-
