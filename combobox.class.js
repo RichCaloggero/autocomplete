@@ -20,6 +20,13 @@ Array.from(this.listbox.children).forEach (e => e.setAttribute("tabindex", "-1")
 e.target.setAttribute("tabindex", "0");
 if (! this.isMultiselect()) this.selectItem (e.target);
 }); // listbox.focusIn
+
+this.listbox.addEventListener ("select", e => {
+}); // select handler
+
+this.listbox.addEventListener ("unselect", e => {
+
+}); // unselect handler
 } // constructor
 
 /// methods
@@ -119,25 +126,28 @@ return Array.from(this.listbox.querySelectorAll ("[aria-selected='true']"));
 
 selectItem (item, toggle) {
 if (item) {
+let cache = item.getAttribute("aria-selected");
 if (toggle && this.isMultiselect()) {
 item.setAttribute ("aria-selected",
 item.getAttribute ("aria-selected") === "true"? "false" : "true"
 ); // setAttribute
-triggerEvent ();
+
 } else {
 this.unselectAll ();
 item.setAttribute ("aria-selected", "true");
-triggerEvent ();
 } // if
+
+if (item.getAttribute("aria-selected") !== cache)
+isSelected(item)? this.trigger ("selected", item)
+: this.trigger ("unselected", item);
 } // if
 
 return item || null;
 
 
-function triggerEvent () {
-if (item.getAttribute("aria-selected") === "true") this.trigger ("selected", item);
-else this.trigger ("unselected", item);
-} // triggerEvent
+function isSelected (item) {
+return item && item.matches("[aria-selected='true']");
+} // isSelected
 } // this.selectItem
 
 focusedItem () {
