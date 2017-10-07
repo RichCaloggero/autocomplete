@@ -58,11 +58,11 @@ if (this.isMultiselect()) this.selectItem (this.focusedItem(), "toggle");
 return false;
 
 case "ArrowUp":
-this.focusItem (this.previous());
+this.focusItem (this.previous("wrap"));
 return false;
 
 case "ArrowDown":
-this.focusItem (this.next());
+this.focusItem (this.next("wrap"));
 return false;
 
 default:  return true;
