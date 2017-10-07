@@ -41,14 +41,13 @@
 let multiselect = document.querySelector ("#multiselect");
 let autocomplete = setupAutocomplete ();
 
-autocomplete.container.addEventListener ("value", () => autocomplete.message (`You chose ${autocomplete.valueOf()}.`));
+autocomplete.container.addEventListener ("done", () => autocomplete.message (`You chose ${autocomplete.valueOf()}.`));
 multiselect.addEventListener ("click", e => {
 if (e.target.checked) {
 autocomplete.combobox.container.classList.add("multiselect");
 } else {
 autocomplete.combobox.container.classList.remove("multiselect");
 } // if
-//autocomplete = setupAutocomplete ();
 }); // handler
 
 

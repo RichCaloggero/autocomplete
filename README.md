@@ -28,6 +28,13 @@ These classes add behavior to existing markup.  The markup you must include has 
 </div><!-- .autocomplete -->
 ```
 
+### Events
+
+- select or unselect on listbox option: bubbles
+- change on listbox item: bubbles
+- focusin on listbox item: bubbles
+- done on autocomplete container: bubbles
+
 ### Required classes
 
 - autocomplete: on the widget container

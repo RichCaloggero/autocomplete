@@ -45,7 +45,7 @@ switch (e.key) {
 case "Enter":
 this.input.value = this.valueOf();
 this.close ();
-this.trigger ("value");
+this.trigger ("done");
 return false;
 
 case "Escape":
@@ -144,10 +144,18 @@ item.focus ();
 return item || null;
 } // this.focusItem
 
-
 unselectAll () {
-this.selectedItems().forEach (e => e.setAttribute ("aria-selected", "false"));
+this.selectedItems().forEach (e => this.unselectItem(e));
 } // this.unselectAll 
+
+unselectItem (item) {
+if (item) {
+item.setAttribute ("aria-selected", "false");
+this.trigger ("unselect", item);
+} // if
+
+return item || null;
+} // unselectItem
 
 focusFirstItem () {
 return this.focusItem (this.listbox.firstElementChild);
