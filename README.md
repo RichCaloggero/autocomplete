@@ -16,11 +16,16 @@ These classes add behavior to existing markup.  The markup you must include has 
 ```
 <div class="autocomplete" id="myAutocomplete">
 <div class="combobox multiselect" id="myCombobox">
+<!-- label any way you like; I always use wrapped labels if I can since it eliminates the need for IDs -->
 <label>choose:
 <input type="text">
 </label>
 
+<!-- add a wrapper with role of application if you like; it makes handling escape seemless, but produces a small extra announcement each time the list is focused -->
+<div role="application">
 <ul class="suggestions" role="listbox"></ul>
+</div>
+
 </div><!-- .combobox -->
 
 <div class="message" aria-live="polite">
@@ -31,8 +36,8 @@ These classes add behavior to existing markup.  The markup you must include has 
 ### Events
 
 - select or unselect on listbox option: bubbles
-- change on listbox item: bubbles
-- focusin on listbox item: bubbles
+- change on listbox option: bubbles
+- focusin on listbox option: bubbles
 - done on autocomplete container: bubbles
 
 ### Required classes
@@ -40,7 +45,7 @@ These classes add behavior to existing markup.  The markup you must include has 
 - autocomplete: on the widget container
 - combobox: on the combobox container (contains the input field and suggestions list)
 - suggestions: on the suggestions list
-- message: on the message area
+- message: on the message container (also requires live region markup as shown above)
 
 
 ## Add appropriate CSS
