@@ -57,6 +57,7 @@ return false;
 
 case "Escape":
 this.input.value = "";
+this.unselectAll ();
 this.close ();
 return false;
 
@@ -121,15 +122,17 @@ return item.previousElementSibling
 } // this.previous
 
 selectedItems () {
-return Array.from(this.listbox.querySelectorAll ("[aria-selected='true']"));
+return Array.from(this.listbox.children).filter (this.isSelected);
 } // this.selectedItems
 
 selectItem (item, toggle) {
 if (item) {
-let cache = item.getAttribute("aria-selected");
+// fire select or unselect events only if state has really changed
+let cache = this.isSelected(item);
+
 if (toggle && this.isMultiselect()) {
 item.setAttribute ("aria-selected",
-item.getAttribute ("aria-selected") === "true"? "false" : "true"
+this.isSelected(item)? "false" : "true"
 ); // setAttribute
 
 } else {
@@ -137,18 +140,18 @@ this.unselectAll ();
 item.setAttribute ("aria-selected", "true");
 } // if
 
-if (item.getAttribute("aria-selected") !== cache)
-isSelected(item)? this.trigger ("selected", item)
+// if state has really changed, then fire appropriate event
+if (this.isSelected(item) !== cache)
+this.isSelected(item)? this.trigger ("selected", item)
 : this.trigger ("unselected", item);
 } // if
 
 return item || null;
-
-
-function isSelected (item) {
-return item && item.matches("[aria-selected='true']");
-} // isSelected
 } // this.selectItem
+
+isSelected (item) {
+return item && item.matches("[aria-selected='true']");
+} // this.isSelected
 
 focusedItem () {
 //return this.listbox.querySelector ("[tabindex='0']");

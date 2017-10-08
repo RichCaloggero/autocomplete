@@ -18,6 +18,8 @@ left: -99999px; top: -99999px;
 width: 1px; height:; 1px;
 overflow: hidden;
 }
+
+p label {float: left;}
 </style>
 
 <script src="autocomplete.class.js"></script>
@@ -39,7 +41,7 @@ overflow: hidden;
 <input type="text">
 </label>
 
-<ul class="suggestions"></ul>
+<div role="application"><ul class="suggestions"></ul></div>
 </div><!-- .combobox -->
 
 <div class="message off-screen" aria-live="polite">
