@@ -15,6 +15,12 @@ this.clear ();
 
 this.input.addEventListener ("keydown", e => this.navigateInput(e));
 this.listbox.addEventListener ("keydown", e => this.navigateList(e));
+this.listbox.addEventListener ("click", e => {
+e.target.focus ();
+this.done ();
+return false;
+});
+
 this.listbox.addEventListener ("focusin", e => {
 Array.from(this.listbox.children).forEach (e => e.setAttribute("tabindex", "-1"));
 e.target.setAttribute("tabindex", "0");
@@ -50,15 +56,14 @@ default: return true;
 navigateList (e) {
 switch (e.key) {
 case "Enter":
-this.input.value = this.valueOf();
-this.close ();
-this.trigger ("done");
+this.done ();
 return false;
 
 case "Escape":
 this.input.value = "";
-this.unselectAll ();
+this.clear ();
 this.close ();
+this.trigger ("cancel");
 return false;
 
 case " ": // space key
@@ -76,6 +81,12 @@ return false;
 default:  return true;
 } // switch
 } // navigateList
+
+done () {
+this.input.value = this.valueOf();
+this.close ();
+this.trigger ("done");
+} // this.done
 
 open () {
 this.showList ();

@@ -6,6 +6,8 @@ if (element.classList.contains("multiselect")) this.combobox.container.classList
 this.items = [];
 this.addItems (items);
 
+this.combobox.container.addEventListener ("cancel", () => items.forEach(item => this.combobox.addItem(item)));
+
 this.combobox.input.addEventListener ("input", e => {
 let matches = this.filter (e.target.value, "pre");
 
@@ -14,7 +16,9 @@ this.combobox.clear ();
 matches.forEach (item => this.combobox.addItem(item));
 this.combobox.showList ();
 } // if
-this.message (`${matches.length} matches`);
+
+if (e.target.value) this.message (`${matches.length} matches`);
+
 });
 } // constructor
 
