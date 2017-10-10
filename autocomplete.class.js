@@ -9,9 +9,10 @@ this.addItems (items);
 this.combobox.input.addEventListener ("input", e => {
 let matches = this.filter (e.target.value, "pre");
 
-if (matches.length) {
+if (matches.length > 0) {
 this.combobox.clear ();
 matches.forEach (item => this.combobox.addItem(item));
+this.combobox.showList ();
 } // if
 this.message (`${matches.length} matches`);
 });

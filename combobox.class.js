@@ -78,21 +78,30 @@ default:  return true;
 } // navigateList
 
 open () {
-this.listbox.classList.remove("hidden");
+this.showList ();
 this.input.setAttribute ("aria-controls", this.listbox.id);
 this.input.setAttribute ("aria-expanded", "true");
 this.input.setAttribute ("tabindex", "-1");
 //this.input.setAttribute ("aria-activedescendant", active_id);
 } // this.open
 
+showList () {
+this.listbox.classList.remove("hidden");
+} // this.showList
+
+
 close () {
-this.listbox.classList.add("hidden");
+this.hideList ();
 this.input.removeAttribute ("aria-controls");
 this.input.setAttribute ("aria-expanded", "false");
 this.input.removeAttribute ("tabindex");
 //this.input.removeAttribute ("aria-activedescendant");
 this.input.focus ();
 } // this.close
+
+hideList () {
+this.listbox.classList.add("hidden");
+} // hideList
 
 addItem (text) {
 if (text) {
