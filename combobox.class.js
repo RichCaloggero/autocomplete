@@ -17,7 +17,7 @@ this.input.addEventListener ("keydown", e => this.navigateInput(e));
 this.listbox.addEventListener ("keydown", e => this.navigateList(e));
 this.listbox.addEventListener ("click", e => {
 e.target.focus ();
-this.done ();
+if (! this.isMultiselect()) this.done ();
 return false;
 });
 
