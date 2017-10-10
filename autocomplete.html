@@ -7,10 +7,10 @@
 <title>autocomplete</title>
 
 <style>
+[role=listbox] > [aria-selected='true']::before {content: ">>";} /* for testing; remove in production */
 .combobox [role=listbox].hidden {display: none};
 [role=listbox] {list-style-type: none;}
-[role=listbox] > [aria-selected='true']::before {content: ">>";}
-[role=listbox] > :focus {border: 1px dotted;}
+[role=listbox] > :focus, [role=listbox] > :hover {border: 1px dotted;}
 
 .off-screen {
 position: absolute;
