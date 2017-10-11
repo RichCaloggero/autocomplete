@@ -15,7 +15,14 @@ this.clear ();
 
 this.input.addEventListener ("keydown", e => this.navigateInput(e));
 this.listbox.addEventListener ("keydown", e => this.navigateList(e));
+
+// mouse support
 this.listbox.addEventListener ("click", e => {
+e.target.focus ();
+if (! this.isMultiselect()) this.done ();
+return false;
+});
+this.listbox.addEventListener ("mouseover", e => {
 e.target.focus ();
 if (! this.isMultiselect()) this.done ();
 return false;
@@ -89,6 +96,7 @@ this.trigger ("done");
 } // this.done
 
 open () {
+if (this.listbox.children.length === 0) return;
 this.showList ();
 this.input.setAttribute ("aria-controls", this.listbox.id);
 this.input.setAttribute ("aria-expanded", "true");
