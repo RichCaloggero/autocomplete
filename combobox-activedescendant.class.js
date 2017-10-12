@@ -28,7 +28,7 @@ return false;
 });
 this.listbox.addEventListener ("mouseover", e => {
 if (e.target === e.currentTarget) return true;
-trigger ("click", e.target);
+this.activateItem (e.target);
 return false;
 });
 

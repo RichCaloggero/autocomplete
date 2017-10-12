@@ -19,7 +19,6 @@ width: 1px; height:; 1px;
 overflow: hidden;
 }
 
-p label {float: left;}
 </style>
 
 <script src="autocomplete.class.js"></script>
@@ -33,14 +32,14 @@ p label {float: left;}
 Keyboard and mouse commands are as follows:
 </p>
 
-<h2>When focused in text input box:</h2>
+<div><h2>When focused in text input box:</h2>
 <ul><li>
 arrows move focus to suggestion list
 </li><li>
 alphanumerics and backspace display suggestion list if matches found
 (count of matches is displayed if "show screen reader messages" is checked in the demo)
 </li></ul>
-
+</div><div>
 <h2>When focused in suggestions list:</h2>
 
 <ul><li>
@@ -52,14 +51,15 @@ enter and/or mouse click accepts current selection and closes list
 </li><li>
 escape cancels and refocuses input
 </li></ul>
+</div>
 
-<p><label>Multiselect
-<br><input type="checkbox" id="multiselect">
+<div><label>Multiselect
+<input type="checkbox" id="multiselect">
 </label><label>Show screen reader messages
-<br><input type="checkbox" id="showMessages">
-</label></p>
+<input type="checkbox" id="showMessages">
+</label></div>
 
-<div class="autocomplete immediate" id="myAutocomplete">
+<div class="autocomplete" id="myAutocomplete">
 <div class="combobox" id="myCombobox">
 <label>choose:
 <input type="text">

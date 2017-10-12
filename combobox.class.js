@@ -24,7 +24,6 @@ return false;
 });
 this.listbox.addEventListener ("mouseover", e => {
 e.target.focus ();
-if (! this.isMultiselect()) this.done ();
 return false;
 });
 
@@ -201,6 +200,7 @@ this.trigger ("unselect", item);
 return item || null;
 } // unselectItem
 
+
 focusFirstItem () {
 return this.focusItem (this.listbox.firstElementChild);
 } // this.focusFirstItem
@@ -242,5 +242,9 @@ let e = new CustomEvent(type, {bubbles: true});
 if (! component) component = this.container;
 component.dispatchEvent (e);
 } // this.trigger
+
+/// aliases
+activateFirstItem () {return this.focusFirstItem();}
+activateLastItem () {return this.focusLastItem();}
 
 } // class ComboboxBehavior
