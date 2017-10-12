@@ -34,12 +34,6 @@ e.target.setAttribute("tabindex", "0");
 if (! this.isMultiselect()) this.selectItem (e.target);
 }); // listbox.focusIn
 
-this.listbox.addEventListener ("select", e => {
-}); // select handler
-
-this.listbox.addEventListener ("unselect", e => {
-
-}); // unselect handler
 } // constructor
 
 /// methods
