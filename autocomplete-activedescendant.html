@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+<title>autocomplete</title>
+
+<style>
+[role=listbox] > [aria-selected='true']::before {content: ">>";} /* for testing; remove in production */
+.combobox [role=listbox].hidden {display: none};
+[role=listbox] {list-style-type: none;}
+[role=listbox] > :focus, [role=listbox] > :hover {border: 1px dotted;}
+
+.off-screen {
+position: absolute;
+left: -99999px; top: -99999px;
+width: 1px; height:; 1px;
+overflow: hidden;
+}
+
+p label {float: left;}
+</style>
+
+<script src="autocomplete.class.js"></script>
+<script src="combobox-activedescendant.class.js"></script>
+
+</head>
+<body>
+<h1>Autocomplete Demo</h1>
+
+<p>Simple autocomplete / typeahead widget. 
+Keyboard and mouse commands are as follows:
+</p>
+
+<h2>When focused in text input box:</h2>
+<ul><li>
+arrows move focus to suggestion list
+</li><li>
+alphanumerics and backspace display suggestion list if matches found
+(count of matches is displayed if "show screen reader messages" is checked in the demo)
+</li></ul>
+
+<h2>When focused in suggestions list:</h2>
+
+<ul><li>
+arrows and/or mouse hover move focus among suggestions
+(if in single select mode, selection follows focus, otherwise selection does not change)
+</li><li>
+enter and/or mouse click accepts current selection and closes list
+(if in single select mode will select item, otherwise selection not modified)
+</li><li>
+escape cancels and refocuses input
+</li></ul>
+
+<p><label>Multiselect
+<br><input type="checkbox" id="multiselect">
+</label><label>Show screen reader messages
+<br><input type="checkbox" id="showMessages">
+</label></p>
+
+<div class="autocomplete" id="myAutocomplete">
+<div class="combobox" id="myCombobox">
+<label>choose:
+<input type="text">
+</label>
+
+<div role="application"><ul class="suggestions"></ul></div>
+</div><!-- .combobox -->
+
+<div class="message off-screen" aria-live="polite">
+</div>
+</div><!-- .autocomplete -->
+
+<div id="message" class="message" aria-live="polite">
+</div>
+
+<script>
+let message = document.querySelector ("#message");
+let multiselect = document.querySelector ("#multiselect");
+let showMessages = document.querySelector ("#showMessages");
+let autocomplete = setupAutocomplete ();
+
+autocomplete.container.addEventListener ("done", () => message.innerHTML = `You chose ${autocomplete.valueOf()}.`);
+
+multiselect.addEventListener ("click", e => {
+if (e.target.checked) {
+autocomplete.combobox.container.classList.add("multiselect");
+} else {
+autocomplete.combobox.container.classList.remove("multiselect");
+} // if
+}); // handler
+
+showMessages.addEventListener ("click", e => {
+let message = document.querySelector(".autocomplete .message"); // screen reader message container
+if (e.target.checked) {
+message.classList.remove("off-screen");
+} else {
+message.classList.add("off-screen");
+} // if
+}); // handler
+
+function setupAutocomplete () {
+return new AutocompleteBehavior (document.querySelector ("#myAutocomplete"),
+["chocolate", "vanilla", "strawberry", "coconut"]);
+} // setupAutocomplete
+</script>
+
+</body>
+</html>
