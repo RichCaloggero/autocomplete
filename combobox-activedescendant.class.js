@@ -1,9 +1,13 @@
 class ComboboxBehavior {
 constructor (element) {
+if (! element) {
+alert ("combobox: no DOM element given");
+return;
+} // if
+
 this.container = element;
 this.listbox = this.container.querySelector (".suggestions");
 this.input = this.container.querySelector ("input");
-this.index = -1;
 
 this.id_active = this.container.id + "-activedescendant";
 this.listbox.id = this.container.id + "-suggestions";
@@ -18,19 +22,21 @@ this.input.addEventListener ("keydown", e => this.navigateInput(e));
 
 // mouse support
 this.listbox.addEventListener ("click", e => {
-e.target.focus ();
+this.activateItem (e.target);
 if (! this.isMultiselect()) this.done ();
 return false;
 });
 this.listbox.addEventListener ("mouseover", e => {
-e.target.focus ();
-if (! this.isMultiselect()) this.done ();
+if (e.target === e.currentTarget) return true;
+trigger ("click", e.target);
 return false;
 });
 
 this.listbox.addEventListener ("active", e => {
 Array.from(this.listbox.children).forEach (e => e.removeAttribute("id"));
 e.target.setAttribute("id", this.id_active);
+this.input.removeAttribute ("aria-activedescendant");
+this.input.setAttribute ("aria-activedescendant", this.id_active);
 if (! this.isMultiselect()) this.selectItem (e.target);
 }); // active handler
 } // constructor
@@ -44,28 +50,25 @@ this.done ();
 return false;
 
 case "Escape":
-this.input.value = "";
-this.clear ();
-this.close ();
-this.trigger ("cancel");
+this.cancel ();
 return false;
 
 case " ": // space key
-if (e.ctrlKey && this.isMultiselect()) this.selectItem (this.focusedItem(), "toggle");
+if (e.ctrlKey && this.isMultiselect()) this.selectItem (this.activeItem(), "toggle");
 return false;
 
 case "ArrowUp":
 if (this.listbox.children.length > 0) {
-if (this.isOpen()) this.focusItem (this.previous("wrap"));
-else this.focusItem (this.listbox.lastElementChild);
+if (this.isOpen()) this.activateItem (this.previous("wrap"));
+else this.activateItem (this.listbox.lastElementChild);
 this.open ();
 } // if
 return false;
 
 case "ArrowDown":
 if (this.listbox.children.length > 0) {
-if (this.isOpen()) this.focusItem (this.next("wrap"));
-else this.focusItem (this.listbox.firstElementChild);
+if (this.isOpen()) this.activateItem (this.next("wrap"));
+else this.activateItem (this.listbox.firstElementChild);
 this.open ();
 } // if
 return false;
@@ -77,9 +80,17 @@ default: return true;
 
 done () {
 this.input.value = this.valueOf();
+//this.clear ();
 this.close ();
 this.trigger ("done");
 } // this.done
+
+cancel () {
+this.input.value = "";
+this.clear ();
+this.close ();
+this.trigger ("cancel");
+} // this.cancel
 
 open () {
 if (this.listbox.children.length === 0) return;
@@ -101,7 +112,6 @@ close () {
 this.hideList ();
 this.input.removeAttribute ("aria-controls");
 this.input.setAttribute ("aria-expanded", "false");
-this.input.removeAttribute ("tabindex");
 this.input.removeAttribute ("aria-activedescendant");
 } // this.close
 
@@ -116,22 +126,18 @@ item.textContent = text;
 item.setAttribute ("role", "option");
 item.setAttribute ("aria-selected", "false");
 
-//if (this.listbox.children.length > 0) 
-item.setAttribute ("tabindex", "-1");
-//else item.setAttribute ("tabindex", "0");
-
 this.listbox.appendChild (item);
 } // if
 } // this.addItem
 
 next (wrap) {
-let item = this.focusedItem() || this.listbox.firstElementChild;
+let item = this.activeItem() || this.listbox.firstElementChild;
 return item.nextElementSibling
 || (wrap? this.listbox.firstElementChild : null);
 } // this.next
 
 previous (wrap) {
-let item = this.focusedItem() || this.listbox.firstElementChild;
+let item = this.activeItem() || this.listbox.firstElementChild;
 return item.previousElementSibling
 || (wrap? this.listbox.lastElementChild : null);
 } // this.previous
@@ -168,17 +174,17 @@ isSelected (item) {
 return item && item.matches("[aria-selected='true']");
 } // this.isSelected
 
-focusedItem () {
+activeItem () {
 return this.listbox.querySelector (`#${this.id_active}`);
-} // this.focusedItem 
+} // this.activeItem 
 
-focusItem (item) {
+activateItem (item) {
 if (item) {
 this.trigger ("active", item);
 } // if
 
 return item || null;
-} // this.focusItem
+} // this.activateItem
 
 unselectAll () {
 this.selectedItems().forEach (e => this.unselectItem(e));
@@ -193,13 +199,13 @@ this.trigger ("unselect", item);
 return item || null;
 } // unselectItem
 
-focusFirstItem () {
-return this.focusItem (this.listbox.firstElementChild);
-} // this.focusFirstItem
+activateFirstItem () {
+return this.activateItem (this.listbox.firstElementChild);
+} // this.activateFirstItem
 
-focusLastItem () {
-return this.focusItem (this.listbox.lastElementChild);
-} // this.focusLastItem
+activateLastItem () {
+return this.activateItem (this.listbox.lastElementChild);
+} // this.activateLastItem
 
 valueOf () {
 return this.selectedItems().map (

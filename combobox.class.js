@@ -1,6 +1,6 @@
 class ComboboxBehavior {
 constructor (element) {
-this.combobox = this.container = element;
+this.container = element;
 this.listbox = this.container.querySelector (".suggestions");
 this.input = this.container.querySelector ("input");
 

@@ -1,8 +1,20 @@
 class AutocompleteBehavior {
 constructor (element, items) {
+if (! element) {
+alert ("autocomplete: no DOM element given");
+return;
+} // if
+
+if (! items) {
+alert ("autocomplete: no item list given");
+return;
+} // if
+
 this.container = element;
+this.immediate = this.container.classList.contains ("immediate");
+
 this.combobox = new ComboboxBehavior (this.container.querySelector(".combobox"));
-if (element.classList.contains("multiselect")) this.combobox.container.classList.add("multiselect");
+if (this.container.classList.contains("multiselect")) this.combobox.container.classList.add("multiselect");
 this.items = [];
 this.addItems (items);
 
@@ -18,6 +30,8 @@ if (matches.length > 0) {
 matches.forEach (item => this.combobox.addItem(item));
 this.combobox.showList ();
 } // if
+
+if (! this.combobox.isMultiselect() && this.immediate && matches.length === 1) this.combobox.activateFirstItem ();
 this.message (`${matches.length} matches`);
 
 } else {

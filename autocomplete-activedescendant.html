@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-<title>autocomplete</title>
+<title>autocomplete (using aria-activedescendant)</title>
 
 <style>
 [role=listbox] > [aria-selected='true']::before {content: ">>";} /* for testing; remove in production */
@@ -59,8 +59,8 @@ escape cancels and refocuses input
 <br><input type="checkbox" id="showMessages">
 </label></p>
 
-<div class="autocomplete" id="myAutocomplete">
-<div class="combobox" id="myCombobox">
+<div class="autocomplete immediate" id="myAutocomplete">
+<div class="combobox immediate" id="myCombobox">
 <label>choose:
 <input type="text">
 </label>
