@@ -1,40 +1,55 @@
-document.addEventListener ("keydown", (e) => {
-if (e.key === "Enter" && e.shiftKey && e.altKey) {
-let message = document.querySelector ("#message, .message, .status");
-if (message) message.innerHTML = getCssInfo(e.target);
-else alert (getCssInfo(this.target));
-
-e.cancelBubble = true;
-e.stopPropagation();
-e.preventDefault ();
-return false;
+document.addEventListener ("click", (e) => {
+if (e instanceof MouseEvent) {
+return handleEvent (e);
 } // if
 
 return true;
 }, true); // event listener
 
-function getCssInfo (element) {
-let css = element.getBoundingClientRect ();
-return `${element.nodeName}${elementId()}${elementClass()}: ${elementPosition()}`;
+document.addEventListener ("keydown", (e) => {
+if (e.key === "Enter" && e.shiftKey && e.altKey) {
+return handleEvent (e);
+} // if
 
-function elementId () {
+return true;
+}, true); // event listener
+
+function handleEvent (e) {
+let message = document.querySelector ("#message, .message, .status");
+if (message) message.innerHTML = getInfo(e);
+else alert (getInfo(e));
+
+e.cancelBubble = true;
+e.stopPropagation();
+e.preventDefault ();
+return false;
+} // handleEvent
+
+function getInfo (e) {
+let element = e.target;
+let css = element.getBoundingClientRect ();
+return `${element.nodeName}${elementId(element)}${elementClass(element)}: ${elementPosition(element)}, ${mousePosition(e)}`;
+
+function elementId (element) {
 return (element.id)? "#" + element.id : "";
 } // elementId
 
-function elementClass () {
+function elementClass (element) {
 return (element.getAttribute("class"))? "." + element.className : "";
 } // elementClass
 
-function elementPosition () {
+function elementPosition (element) {
 return `${round(css.left)}, ${round(css.top)}`;
 } // elementPosition 
 
-function elementDimensions () {
-return `${round(css.x)}, ${round(css.y)}`;
-} // elementDimensions 
+function mousePosition (e) {
+return `client (${e.clientX}, ${e.clientY}); screen (${e.screenX}, ${e.screenY})`;
+} // mousePosition
 
-function round (n) {
-return Math.round (Math.trunc(10.0 * n) / 10.0);
-} // round
 } // displayElementInfo
 
+function round (n, digitCount) {
+if (! digitCount) digitCount = 2;
+let p = Math.pow (10.0, digitCount);
+return Math.round(p * n) / p;
+} // round
