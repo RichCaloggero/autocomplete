@@ -33,9 +33,10 @@ return false;
 });
 
 this.listbox.addEventListener ("active", e => {
+this.input.setAttribute("aria-expanded", "true");
 Array.from(this.listbox.children).forEach (e => e.removeAttribute("id"));
-e.target.setAttribute("id", this.id_active);
 this.input.removeAttribute ("aria-activedescendant");
+e.target.setAttribute("id", this.id_active);
 this.input.setAttribute ("aria-activedescendant", this.id_active);
 if (! this.isMultiselect()) this.selectItem (e.target);
 }); // active handler
