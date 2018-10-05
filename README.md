@@ -1,8 +1,9 @@
 # Accessible Autocomplete ( typeahead ) widget
 
-## Demo
+## Demos
 
-[demo](https://RichCaloggero.github.io/autocomplete/autocomplete.html)
+- [demo (aria-activedescendant)](https://RichCaloggero.github.io/autocomplete/autocomplete-activedescendant.html)
+- [demo (roving tabindex)](https://RichCaloggero.github.io/autocomplete/autocomplete.html)
 
 
 I wrote this because I've found very few, if any, accessible autocomplete widgets in the wild, especially ones which support multiselect.
